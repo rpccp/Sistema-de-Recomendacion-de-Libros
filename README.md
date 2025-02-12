@@ -1,4 +1,4 @@
-# Sistema-de-Recomendacion-de-Libros
+# Sistema de Recomendacion de Libros
 ## Acerca del proyecto
 
 En este proyecto hice un sistema de recomendacion, en este caso, de libros, en Python con LLMs
