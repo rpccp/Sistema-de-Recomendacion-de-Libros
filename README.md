@@ -21,15 +21,17 @@ Luego devuelve los libros asociados a los vectores mas cercanos
 * Ollama
 * Pandas
 * Faiss
+* NumPy
 
 ### Que aprendi?
 
 Construir este proyecto fue un desafio, en el cual tuve la oportunidad de aprender y mejorar mis habilidades en:
 
 * Manipulacion de grandes cantidades de datos con herramientas de Ciencias de Datos
+* Manipulacion de vectores grandes multidimencionales
 * Uso de LLMs
 * Uso de herramientas para busqueda eficiente por similitud
 
-## Contacto
+### Contacto
 
 Rocco Gasparini - [@rtffrock](https://x.com/rtffrock) - rgasparini75@gmail.com
