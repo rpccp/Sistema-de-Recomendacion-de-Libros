@@ -112,6 +112,4 @@ python app.py build-index
 
 Rocco Gasparini
 
-X: [@rtffrock](https://x.com/rtffrock)
-
 Email: rgasparini75@gmail.com
