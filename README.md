@@ -1,37 +1,117 @@
 # Sistema de Recomendacion de Libros
-## Acerca del proyecto
 
-En este proyecto hice un sistema de recomendacion, en este caso, de libros, en Python con LLMs
+Sistema de recomendacion basado en embeddings, Ollama y FAISS. El proyecto toma un dataset de libros, transforma la informacion relevante de cada titulo en una representacion textual, genera embeddings y busca libros semanticamente similares mediante busqueda vectorial.
 
-### Que hace este programa?
+## Objetivo
 
-Lo que hace este programa es tomar un data set de muchos libros distintos, en el que cada libro tiene distintos atributos (titulo, autor, rating, genero, etc...).
+El sistema permite ingresar un titulo o parte de un titulo y obtener recomendaciones de libros parecidos segun descripcion, autores, categorias, rating y cantidad de paginas. Esta pensado como una demostracion practica de recuperacion semantica de informacion aplicada a un catalogo de libros.
 
-Toma esos atributos y construye una representacion textual, en este caso texto crudo.
+## Tecnologias
 
-Luego usa tecnologia LLM para convertir esa representacion textual en un vector (en este caso use DeepSeek R1 7b), el cual se va a guardar en una Vector Store.
+- Python
+- Pandas y NumPy para procesamiento de datos
+- Ollama para generar embeddings localmente
+- FAISS para busqueda eficiente por similitud
+- Jupyter Notebook para exploracion y demostracion
 
-Entonces, cuando elijo un libro y quiero recomendaciones, lo convierte en un vector y busca cuales libros son los mas parecidos preguntando cuales son los vectores mas cercanos (Similarity Search).
+## Estructura
 
-Luego devuelve los libros asociados a los vectores mas cercanos
+```text
+.
+|-- app.py                 # CLI para consultar, inspeccionar y regenerar el indice
+|-- books.csv              # Dataset de libros
+|-- indice                 # Indice FAISS ya generado
+|-- index_metadata.json    # Metadatos del indice incluido
+|-- requirements.txt       # Dependencias del proyecto
+|-- sistema.ipynb          # Notebook de demostracion
+`-- src/
+    |-- __init__.py
+    `-- recommender.py     # Logica principal del recomendador
+```
 
-### Construido con
+## Instalacion
 
-* Python
-* Ollama
-* Pandas
-* Faiss
-* NumPy
+1. Crear y activar un entorno virtual:
 
-### Que aprendi?
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
 
-Construir este proyecto fue un desafio, en el cual tuve la oportunidad de aprender y mejorar mis habilidades en:
+En Windows PowerShell:
 
-* Manipulacion de grandes cantidades de datos con herramientas de Ciencias de Datos
-* Manipulacion de vectores grandes multidimencionales
-* Uso de LLMs
-* Uso de herramientas para busqueda eficiente por similitud
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
 
-### Contacto
+2. Instalar dependencias:
 
-Rocco Gasparini - [@rtffrock](https://x.com/rtffrock) - rgasparini75@gmail.com
+```bash
+pip install -r requirements.txt
+```
+
+3. Instalar y ejecutar Ollama:
+
+```bash
+ollama serve
+ollama pull deepseek-r1:7b
+```
+
+> El archivo `indice` incluido fue generado para embeddings de 3584 dimensiones. Si se usa otro modelo, hay que regenerar el indice con el mismo modelo que se vaya a usar para recomendar.
+
+## Uso
+
+Ver informacion del dataset y del indice:
+
+```bash
+python app.py info
+```
+
+Obtener recomendaciones:
+
+```bash
+python app.py recommend "Rich Dad Poor Dad" --k 5
+```
+
+Usar otro modelo o endpoint de Ollama:
+
+```bash
+python app.py --model deepseek-r1:7b --ollama-url http://localhost:11434 recommend "Gilead"
+```
+
+Regenerar el indice FAISS:
+
+```bash
+python app.py build-index
+```
+
+## Como funciona
+
+1. Carga `books.csv` y valida que existan las columnas necesarias.
+2. Limpia texto faltante y corrige errores comunes de encoding presentes en el dataset.
+3. Construye una representacion textual por libro con titulo, autores, descripcion, categoria y metricas.
+4. Genera embeddings con Ollama.
+5. Usa FAISS para recuperar los vectores mas cercanos al libro elegido.
+6. Devuelve los titulos mas similares junto con autor, categoria, rating y distancia vectorial.
+
+## Estado del proyecto
+
+- Incluye un indice FAISS precomputado para evitar regenerar todos los embeddings en cada ejecucion.
+- La logica principal esta separada del notebook para que el proyecto sea mas facil de ejecutar, revisar y extender.
+- La CLI agrega validaciones y mensajes de error para casos comunes: dataset faltante, indice incompatible, Ollama apagado o modelo no instalado.
+
+## Posibles mejoras
+
+- Agregar una interfaz web simple con Streamlit.
+- Evaluar modelos especificos de embeddings y comparar calidad de recomendaciones.
+- Incorporar filtros por categoria, autor, rating minimo o cantidad de paginas.
+- Guardar metadatos del modelo junto al indice para detectar incompatibilidades automaticamente.
+
+## Autor
+
+Rocco Gasparini
+
+X: [@rtffrock](https://x.com/rtffrock)
+
+Email: rgasparini75@gmail.com

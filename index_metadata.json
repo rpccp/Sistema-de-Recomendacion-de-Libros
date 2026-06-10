@@ -1,0 +1,9 @@
+{
+  "index_file": "indice",
+  "dataset_file": "books.csv",
+  "rows": 6810,
+  "dimensions": 3584,
+  "model": "deepseek-r1:7b",
+  "backend": "ollama",
+  "faiss_index": "IndexFlatL2"
+}
